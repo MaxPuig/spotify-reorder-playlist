@@ -2,7 +2,7 @@
 Reorder your spotify playlist in ascending/descending order by date added.
 
 ## Motivation
-I have a playlist with many songs and I wanted to reorder in ascending order by date added. This new order should be the same for everyone, not just locally. I couldn't find any way to do this in the spotify app so I decided to write a script to do it for me.
+I have a big playlist and I wanted to reorder the songs in descending order by date added (newest to oldest). This new order should be the same for everyone, not just locally. I couldn't find any way to do this in the spotify app, and doing it manually was going to take too long, so I decided to write this script.
 
 ## Installation
 ### Prerequisites
