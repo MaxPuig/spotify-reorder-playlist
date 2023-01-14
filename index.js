@@ -55,7 +55,7 @@ app.get("/reorder", async (req, res) => {
         }
         // Order the tracks by the date they were added, newest to oldest and create a variable for the new position to each track
         songs.sort((a, b) => new Date(a.added_at) - new Date(b.added_at));
-        songs.reverse();
+        if (config.descending) songs.reverse();
         let j = 0;
         for (let song of songs) {
             song.newPosition = j;
@@ -82,6 +82,7 @@ app.get("/reorder", async (req, res) => {
             }
         }
         res.status(200).send("Playlist reordered successfully");
+        console.log("Playlist reordered successfully");
     } catch (err) {
         console.log("Something went wrong", err);
         res.status(500).send("An error occurred while trying to reorder the playlist");

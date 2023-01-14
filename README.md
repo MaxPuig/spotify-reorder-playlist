@@ -18,8 +18,10 @@ I have a playlist with many songs and I wanted to reorder in ascending order by 
 ## Steps
 1. Clone the repository: `git clone https://github.com/MaxPuig/spotify-reorder-playlist.git`
 2. Install libraries: `npm install`
-3. Modify `config.json` with your spotify `clientId`, `clientSecret` and `playlistId`
+3. Modify `config.json` with your spotify `clientId`, `clientSecret`, `playlistId`, and `descending`
    > The `playlistId` looks like this `"0BxSFctZ12PYY7ysO9mrTc"` and can be found in the url of the playlist.
+   
+   > `"descending" : true` means that new songs will be at the top of the playlist. Can also be `false` for the reverse order.
 4. Run the script `node index.js`
 5. Access http://localhost:1234/authorize to authorize the app to access your spotify account and start the reordering process
    > When authorizing it for the first time, it might fail. Just reload the website and try again.
