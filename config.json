@@ -2,6 +2,5 @@
     "clientId": "-",
     "clientSecret": "-",
     "redirectUri": "http://localhost:1234/callback",
-    "playlistId": "-",
     "descending": true
 }
