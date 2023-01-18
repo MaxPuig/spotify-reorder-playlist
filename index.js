@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/authorize", (req, res) => {
-    const scopes = ["playlist-modify-public", "playlist-modify-private"];
+    const scopes = ["playlist-modify-public", "playlist-modify-private", "playlist-read-private"];
     res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
@@ -30,10 +30,18 @@ app.get("/playlist", async (req, res) => {
     try {
         // Get all playlists of the user
         const playlists = await spotifyApi.getUserPlaylists();
+        if (playlists.body.total > 20) {
+            for (let i = 0; i < Math.floor(playlists.body.total / 20); i++) {
+                await sleep(500);
+                const nextPlaylists = await spotifyApi.getUserPlaylists({ offset: (i + 1) * 20, limit: 20 });
+                playlists.body.items.push(...nextPlaylists.body.items);
+            }
+        }
         let playlistList = playlists.body.items;
         let html = `<html><head><title>Your Playlists</title><style>body {display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; background-color: black;} h1 {text-align: center; color: white} .playlist-buttons {display: flex; 
-            flex-direction: column;} button {margin: 10px;}</style></head><body><h1>Your Playlists</h1><div class='playlist-buttons'>`;
+            justify-content: center; background-color: black;} h1 {text-align: center; color: white} h3 {text-align: center; color: white} 
+            .playlist-buttons {display: flex; flex-direction: column;} button {margin: 10px;}</style></head><body><h1>Your Playlists</h1>
+            <h3>(You must be the owner)</h3> <div class='playlist-buttons'>`;
         // Loop through each playlist and create a button for it
         playlistList.forEach(playlist => {
             html += `<button onclick="return confirm('Are you sure you want to reorder the playlist: ${playlist.name}?');">
@@ -69,6 +77,7 @@ app.get("/reorder", async (req, res) => {
         const tracks = await spotifyApi.getPlaylistTracks(playlistId, { offset: 0, limit: 100 });
         if (tracks.body.total > 100) {
             for (let i = 0; i < Math.floor(tracks.body.total / 100); i++) {
+                await sleep(500);
                 const nextTracks = await spotifyApi.getPlaylistTracks(playlistId, { offset: (i + 1) * 100, limit: 100 });
                 tracks.body.items.push(...nextTracks.body.items);
             }
